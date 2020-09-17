@@ -58,13 +58,13 @@ for epoch in range(2):  # loop over the dataset multiple times
         inputs, labels = data
 
         # zero the parameter gradients
-        optimizer.zero_grad()
+        optimizer.zero_grad()#将优化器的所有参数梯度缓存器置零
 
         # forward + backward + optimize
-        outputs = net(inputs)
-        loss = criterion(outputs, labels)
-        loss.backward()
-        optimizer.step()
+        outputs = net(inputs)#获得输出
+        loss = criterion(outputs, labels)#求损失函数
+        loss.backward()#计算梯度
+        optimizer.step()#更新神经网络的参数
 
         # print statistics
         running_loss += loss.item()
