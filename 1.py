@@ -7,21 +7,23 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 transform = transforms.Compose(
-    [transforms.ToTensor(),
-     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+    [#transforms.RandomHorizontalFlip(),#用来做数据增强的，为了防止训练出现过拟合，通常在小型数据集上，通过随机翻转图片
+     #transforms.RandomGrayscale(),#随机调整图片的亮度
+     transforms.ToTensor(),#数据集加载时，默认的图片格式是 numpy，所以通过 transforms 转换成 Tensor
+     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])#对输入图片进行标准化
 
 trainset = torchvision.datasets.CIFAR10(root='./data', train=True,
                                         download=True, transform=transform)
-trainloader = torch.utils.data.DataLoader(trainset, batch_size=4,
-                                          shuffle=True, num_workers=0)
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=4,#batch_size单批次图片的数量
+                                          shuffle=True, num_workers=0)#shuffle = True 表明提取数据时，随机打乱顺序
 
 testset = torchvision.datasets.CIFAR10(root='./data', train=False,
                                        download=True, transform=transform)
 testloader = torch.utils.data.DataLoader(testset, batch_size=4,
-                                         shuffle=False, num_workers=0)
+                                         shuffle=False, num_workers=0)#num_workers指定了工作线程的数量
 
 classes = ('plane', 'car', 'bird', 'cat',
-           'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
+           'deer', 'dog', 'frog', 'horse', 'ship', 'truck')#分类的各个类别
 
 class Net(nn.Module):#定义一个神经网络
     def __init__(self):
